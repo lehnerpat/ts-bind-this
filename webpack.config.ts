@@ -41,7 +41,7 @@ const config: webpack.Configuration = {
     plugins: [
         /** https://github.com/jantimon/html-webpack-plugin */
         new HtmlWebpackPlugin({
-            title: 'TS ! bind ! this -- Example'
+            template: './src/index.html'
         })
     ]
 
