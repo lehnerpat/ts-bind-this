@@ -1,0 +1,19 @@
+{
+  "name": "ts-bind-this",
+  "version": "1.0.0-dev",
+  "description": "A talk and example sources about the problem with `this` when using object methods as callbacks in JS/TS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nevik/ts-bind-this.git"
+  },
+  "author": "Patrick Lehner",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nevik/ts-bind-this/issues"
+  },
+  "homepage": "https://github.com/nevik/ts-bind-this#readme"
+}
