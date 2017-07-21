@@ -2,9 +2,14 @@
   "name": "ts-bind-this",
   "version": "1.0.0-dev",
   "description": "A talk and example sources about the problem with `this` when using object methods as callbacks in JS/TS",
+  "private": true,
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "prebuild": "npm run clean:dist",
+    "clean:dist": "rimraf dist",
+    "start": "webpack-dev-server --open"
   },
   "repository": {
     "type": "git",
@@ -15,5 +20,16 @@
   "bugs": {
     "url": "https://github.com/nevik/ts-bind-this/issues"
   },
-  "homepage": "https://github.com/nevik/ts-bind-this#readme"
+  "homepage": "https://github.com/nevik/ts-bind-this#readme",
+  "devDependencies": {
+    "@types/node": "^8.0.14",
+    "@types/webpack": "^3.0.4",
+    "html-webpack-plugin": "^2.29.0",
+    "rimraf": "^2.6.1",
+    "ts-loader": "^2.3.1",
+    "ts-node": "^3.2.1",
+    "typescript": "^2.4.2",
+    "webpack": "^3.3.0",
+    "webpack-dev-server": "^2.5.1"
+  }
 }
