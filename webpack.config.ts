@@ -34,7 +34,13 @@ const config: webpack.Configuration = {
         /** https://webpack.js.org/configuration/module/#module-rules */
         rules: [
             /** https://github.com/TypeStrong/ts-loader */
-            { test: /\.tsx?$/, loader: 'ts-loader' }
+            { test: /\.tsx?$/, loader: 'ts-loader' },
+
+            /**
+             * https://github.com/webpack-contrib/css-loader
+             * https://github.com/webpack-contrib/style-loader
+             */
+            { test: /\.css$/, use: ['style-loader', 'css-loader'] }
         ]
     },
 

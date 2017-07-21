@@ -1,0 +1,15 @@
+.wrapper {
+    display: block;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    background: #f4f5f6;
+}
+
+.wrapper > .container {
+    padding-bottom: 7.5rem;
+    padding-top: 7.5rem;
+    max-width: 80rem;
+    background: white;
+    min-height: 100vh;
+}
