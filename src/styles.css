@@ -13,3 +13,27 @@
     background: white;
     min-height: 100vh;
 }
+
+#list-container {
+    width: 75%;
+    max-width: 40rem;
+    margin: 0 auto;
+}
+
+#list-container .row {
+    margin: 0.5rem;
+    border-bottom: 1px solid #ccc;
+}
+
+#list-container .row:last-child {
+    border-bottom: none;
+}
+
+#list-container .column {
+    line-height: 3.8rem;
+}
+
+#list-container button {
+    width: 100%;
+    margin-bottom: 0;
+}
