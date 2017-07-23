@@ -4,10 +4,10 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>TS ! bind ! this</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="css/theme/white.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -24,8 +24,137 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+
+				<section>
+					<h1>TS ! <code>bind</code> ! <code>this</code></h1>
+					<p>Using instance methods as<br/>
+						callbacks in TypeScript (and ES6+)</p>
+				</section>
+
+				<section>
+					<h2>What's the problem?</h2>
+
+					<ul>
+						<li>Instance methods don't work as callback (naively)
+							<ul>
+								<li><code>$(...).on('click', this.someMethod)</code></li>
+							</ul>
+						</li>
+						<li>You often see:
+							<ul>
+								<li><code>$(...).on('click', this.someMethod.bind(this))</code>, or</li>
+								<li><code>$(...).on('click', () => this.someMethod())</code></li>
+							</ul>
+						</li>
+						<li>Why?</li>
+					</ul>
+				</section>
+
+				<!-- <section data-markdown>
+					<textarea data-template>
+						## What?
+
+						```
+						class OrderItem {
+    						constructor(public name: string) { }
+
+							onOrder() {
+								alert(`You're ordering: ${this.name}!`);
+							}
+						}
+						```
+						Using instance methods as  
+						callbacks in TypeScript (and ES6+)
+					</textarea>
+				</section> -->
+
+				<section>
+					<h2>Cause: &nbsp; <code>this</code> is weird</h2>
+
+					<ul>
+						<li>In JS / TS, <code>this</code> isn't as simple as in Java / C#</li>
+						<li>It's not (always) the current instance when used in a method</li>
+						<li>Instead, it's the so-called <i>context</i> of a function call</li>
+						<li>Note: of the function <i>call</i>, not the method (definition)</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Solution: &nbsp; Preserve the context</h2>
+
+					<ul>
+						<li>Option 1: Wrap in a Lambda</li>
+						<li>Option 2: <code>Function.prototype.bind</code></li>
+						<li>Option 3: Use a Decorator</li>
+						<li>(and 
+							<a href="https://stackoverflow.com/a/14472387/1761499">there's</a>
+							<a href="https://stackoverflow.com/a/21386201/1761499">more</a>!)
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Option 1: Wrap in a Lambda</h2>
+
+					<ul>
+						<li></li>
+						<li>Option 2: <code>Function.prototype.bind</code></li>
+						<li>Option 3: Use a Decorator</li>
+						<li>(and 
+							<a href="https://stackoverflow.com/a/14472387/1761499">there's</a>
+							<a href="https://stackoverflow.com/a/21386201/1761499">more</a>!)
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Option 2: <code>Function.prototype.bind</code></h2>
+
+					<ul>
+						<li>Option 1: Wrap in a Lambda</li>
+						<li></li>
+						<li>Option 3: Use a Decorator</li>
+						<li>(and 
+							<a href="https://stackoverflow.com/a/14472387/1761499">there's</a>
+							<a href="https://stackoverflow.com/a/21386201/1761499">more</a>!)
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Option 3: Use a Decorator</h2>
+
+					<ul>
+						<li>Option 1: Wrap in a Lambda</li>
+						<li>Option 2: <code>Function.prototype.bind</code></li>
+						<li>Option 3: Use a Decorator</li>
+						<li>(and 
+							<a href="https://stackoverflow.com/a/14472387/1761499">there's</a>
+							<a href="https://stackoverflow.com/a/21386201/1761499">more</a>!)
+						</li>
+					</ul>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+						## Sources for this talk
+
+						* [MDN reference on `this`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
+						* [_How can I preserve lexical scope in TypeScript with a callback function_](https://stackoverflow.com/questions/14471975/how-can-i-preserve-lexical-scope-in-typescript-with-a-callback-function) on StackOverflow
+						* [_TypeScript “this” scoping issue when called in jquery callback_](https://stackoverflow.com/questions/20627138/typescript-this-scoping-issue-when-called-in-jquery-callback) on StackOverflow
+						* My own (painful) experience
+					</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+						## Further Reading
+
+						* _all this_ on Bjorn Tipling's blog ([Wayback Machine link](http://web.archive.org/web/20161019171720/http://bjorn.tipling.com/all-this))
+						* [_Gentle explanation of 'this' keyword in JavaScript_](https://rainsoft.io/gentle-explanation-of-this-in-javascript/) by Dmitri Pavlutin
+						* (hard mode:) [Section on `this`](http://www.ecma-international.org/ecma-262/6.0/#sec-this-keyword) in the ECMAScript 2015 spec
+					</textarea>
+				</section>
 			</div>
 		</div>
 
@@ -37,6 +166,9 @@
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
