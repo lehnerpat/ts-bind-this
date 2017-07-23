@@ -3,7 +3,7 @@ import 'milligram';
 
 import './styles.css';
 
-const makeHTML = (orderItem: OrderItem): HTMLElement => {
+const makeHTML = (orderItem: OrderItem): { orderItemDiv: HTMLDivElement, orderItemButton: HTMLButtonElement } => {
     const makeDiv = (...classes: string[]) => {
         const result = document.createElement('div');
         result.classList.add(...classes);
@@ -24,7 +24,7 @@ const makeHTML = (orderItem: OrderItem): HTMLElement => {
     button.appendChild(document.createTextNode('Order!'));
     btnColDiv.appendChild(button);
 
-    return rowDiv;
+    return { orderItemDiv: rowDiv, orderItemButton: button };
 };
 
 class OrderItem {
@@ -41,10 +41,10 @@ const listContainer = document.getElementById('list-container');
 ['Pizza', 'Burgers', 'Pasta']
     .map((name) => new OrderItem(name))
     .forEach((orderItem) => { 
-        const orderItemDiv = makeHTML(orderItem);
+        const { orderItemDiv, orderItemButton } = makeHTML(orderItem);
 
         // the problematic bit:
-        orderItemDiv.addEventListener('click', orderItem.onOrder);
+        orderItemButton.addEventListener('click', orderItem.onOrder);
 
         listContainer.appendChild(orderItemDiv) 
     });
