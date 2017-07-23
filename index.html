@@ -12,6 +12,13 @@
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
 
+		<style type="text/css">
+			code.narrow {
+				font-size: 90%;
+				letter-spacing: -2px;
+			}
+		</style>
+
 		<!-- Printing and PDF exports -->
 		<script>
 			var link = document.createElement( 'link' );
@@ -31,42 +38,46 @@
 						callbacks in TypeScript (and ES6+)</p>
 				</section>
 
-				<section>
-					<h2>What's the problem?</h2>
+				<section data-markdown>
+					<textarea data-template>
+						## What's the problem?
 
-					<ul>
-						<li>Instance methods don't work as callback (naively)
-							<ul>
-								<li><code>$(...).on('click', this.someMethod)</code></li>
-							</ul>
-						</li>
-						<li>You often see:
-							<ul>
-								<li><code>$(...).on('click', this.someMethod.bind(this))</code>, or</li>
-								<li><code>$(...).on('click', () => this.someMethod())</code></li>
-							</ul>
-						</li>
-						<li>Why?</li>
-					</ul>
-				</section>
+						* Instance methods don't work as callback (naively)
+						  ```
+						  $(...).on('click', this.someMethod)
+						  ```
+						* You often see:
+						  ```
+						  $(...).on('click', this.someMethod.bind(this)) // or:
+						  $(...).on('click', () => this.someMethod())
+						  ```
+						* Why?
+					</textarea>
+				</section> 
 
-				<!-- <section data-markdown>
+				<section data-markdown>
 					<textarea data-template>
 						## What?
 
-						```
+						Given this code:
+						```typescript
 						class OrderItem {
-    						constructor(public name: string) { }
+							constructor(public name: string) { }
 
-							onOrder() {
-								alert(`You're ordering: ${this.name}!`);
-							}
+							onOrder() { alert(`You're ordering: ${this.name}!`); }
 						}
+
+						const pizza = new OrderItem('pizza');
+						const pizzaButton = ...; // a <button> for pizza
+						pizzaButton.addEventListener('click', pizza.onOrder);
 						```
-						Using instance methods as  
-						callbacks in TypeScript (and ES6+)
+
+						Clicking the `<button>` shows this message:
+						> You're ordering: !
+
+						<small>There's no `name`!</small>
 					</textarea>
-				</section> -->
+				</section> 
 
 				<section>
 					<h2>Cause: &nbsp; <code>this</code> is weird</h2>
@@ -93,46 +104,106 @@
 					</ul>
 				</section>
 
-				<section>
-					<h2>Option 1: Wrap in a Lambda</h2>
+				<section data-markdown>
+					<textarea data-template>
+						## Option 1: Wrap in a Lambda
 
-					<ul>
-						<li></li>
-						<li>Option 2: <code>Function.prototype.bind</code></li>
-						<li>Option 3: Use a Decorator</li>
-						<li>(and 
-							<a href="https://stackoverflow.com/a/14472387/1761499">there's</a>
-							<a href="https://stackoverflow.com/a/21386201/1761499">more</a>!)
-						</li>
-					</ul>
+						Instead of:
+						```typescript
+						pizzaButton.addEventListener('click', pizza.onOrder);
+						```
+
+						You use a fat-arrow lambda as the callback:
+						```typescript
+						pizzaButton.addEventListener('click', () => { pizza.onOrder(); });
+						```
+					</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+						## Option 1: Wrap in a Lambda
+
+						Tradeoffs:
+						* Good: Easy to read and understand
+						* Good: In TS, provides type safety
+						* Good: Works even when targeting ES3
+						* Good: You only have to state the instance name once
+						* Bad: You have to state the parameters twice
+						* Bad: When the signature changes, so must the lambda
+						* Bad: Doesn't work with varargs ([rest parameters](https://www.typescriptlang.org/docs/handbook/functions.html#rest-parameters))
+					</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+						<h2>Option 2: <code class="narrow">Function.prototype.bind</code></h2>
+
+						Instead of:
+						```typescript
+						pizzaButton.addEventListener('click', pizza.onOrder);
+						```
+
+						You use [`Function.prototype.bind`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_objects/Function/bind):
+						```typescript
+						pizzaButton.addEventListener('click', pizza.order.bind(pizza));
+						```
+					</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+						<h2>Option 2: <code class="narrow">Function.prototype.bind</code></h2>
+
+						Tradeoffs:
+						* Good: No extra work if the function has parameters  
+						(or if they change)
+						* Bad: In TS, (currently) provides no type safety
+						* Bad: Only available in ES5 and later (if that matters)
+						* Bad: You have to state the instance name twice
+						* Bad: Not obvious when reading it
+					</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+						<h2>Option 3: Use a Decorator</h2>
+
+						With a decorator like [this one](https://github.com/JohnWeisz/BoundMethods/blob/master/src/bound.ts), you can use:
+						```typescript
+						class OrderItem {
+							constructor(public name: string) { }
+
+							@bound // <-- using the decorator on the method
+							onOrder() { alert(`You're ordering: ${this.name}!`); }
+						}
+
+						const pizza = new OrderItem('pizza');
+						const pizzaButton = ...; // a <button> for pizza
+						
+						// this now works as expected:
+						pizzaButton.addEventListener('click', pizza.onOrder);
+						```
+					</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+						<h2>Option 3: Use a Decorator</h2>
+
+						Tradeoffs:
+						* Good: Once you add the decorator, you can't forget to preserve the context
+						* Good: In TS, provides type safety
+						* Bad: Hides the solution behind a "magic" decorator
+						* Bad: You have to modify the class decl in order to use it
+					</textarea>
 				</section>
 
 				<section>
-					<h2>Option 2: <code>Function.prototype.bind</code></h2>
+					<h2>That's it!</h2>
 
-					<ul>
-						<li>Option 1: Wrap in a Lambda</li>
-						<li></li>
-						<li>Option 3: Use a Decorator</li>
-						<li>(and 
-							<a href="https://stackoverflow.com/a/14472387/1761499">there's</a>
-							<a href="https://stackoverflow.com/a/21386201/1761499">more</a>!)
-						</li>
-					</ul>
-				</section>
-
-				<section>
-					<h2>Option 3: Use a Decorator</h2>
-
-					<ul>
-						<li>Option 1: Wrap in a Lambda</li>
-						<li>Option 2: <code>Function.prototype.bind</code></li>
-						<li>Option 3: Use a Decorator</li>
-						<li>(and 
-							<a href="https://stackoverflow.com/a/14472387/1761499">there's</a>
-							<a href="https://stackoverflow.com/a/21386201/1761499">more</a>!)
-						</li>
-					</ul>
+					<small class="fragment">Just kidding, there's lots more to <code>this</code>,<br />
+						but that would be too much for this talk ;)</small>
 				</section>
 
 				<section data-markdown>
@@ -142,6 +213,7 @@
 						* [MDN reference on `this`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
 						* [_How can I preserve lexical scope in TypeScript with a callback function_](https://stackoverflow.com/questions/14471975/how-can-i-preserve-lexical-scope-in-typescript-with-a-callback-function) on StackOverflow
 						* [_TypeScript “this” scoping issue when called in jquery callback_](https://stackoverflow.com/questions/20627138/typescript-this-scoping-issue-when-called-in-jquery-callback) on StackOverflow
+						* [_'this' in TypeScript_](https://github.com/Microsoft/TypeScript/wiki/'this'-in-TypeScript) on the TS wiki
 						* My own (painful) experience
 					</textarea>
 				</section>
@@ -152,7 +224,19 @@
 
 						* _all this_ on Bjorn Tipling's blog ([Wayback Machine link](http://web.archive.org/web/20161019171720/http://bjorn.tipling.com/all-this))
 						* [_Gentle explanation of 'this' keyword in JavaScript_](https://rainsoft.io/gentle-explanation-of-this-in-javascript/) by Dmitri Pavlutin
+						* ['this' in the TypeScript manual](https://www.typescriptlang.org/docs/handbook/functions.html#this)
 						* (hard mode:) [Section on `this`](http://www.ecma-international.org/ecma-262/6.0/#sec-this-keyword) in the ECMAScript 2015 spec
+					</textarea>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+						## This Talk is on GitHub
+
+						* [@nevik/ts-bind-this](https://github.com/nevik/ts-bind-this)
+						  * With runnable example code to try it in the browser
+						* Slides are on [the `gh-pages` branch](https://github.com/nevik/ts-bind-this/tree/gh-pages)
+						  * Slides made with [reveal.js](https://github.com/hakimel/reveal.js#configuration)
 					</textarea>
 				</section>
 			</div>
@@ -166,6 +250,9 @@
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+				width: 1100,
+				height: 720,
+				margin: 0.05,
 
 				transition: 'fade', // none/fade/slide/convex/concave/zoom
 
