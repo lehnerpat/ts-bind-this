@@ -17,6 +17,42 @@
 				font-size: 90%;
 				letter-spacing: -2px;
 			}
+
+			.pro-con-list li {
+				padding-left: 1.1em;
+				text-indent: -1.1em;
+			}
+
+			.pro:after {
+				content: '\2295';
+				color: green;
+				speak: none;
+				font-style: normal;
+				font-weight: normal;
+				font-variant: normal;
+				text-transform: none;
+				line-height: 1;
+				font-size: 120%;
+
+				/* Better Font Rendering =========== */
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+			}
+			.con:after {
+				content: '\2296';
+				color: red;
+				speak: none;
+				font-style: normal;
+				font-weight: normal;
+				font-variant: normal;
+				text-transform: none;
+				line-height: 1;
+				font-size: 120%;
+
+				/* Better Font Rendering =========== */
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+			}
 		</style>
 
 		<!-- Printing and PDF exports -->
@@ -120,18 +156,18 @@
 					</textarea>
 				</section>
 
-				<section data-markdown>
+				<section data-markdown class="pro-con-list">
 					<textarea data-template>
 						## Option 1: Wrap in a Lambda
 
 						Tradeoffs:
-						* Good: Easy to read and understand
-						* Good: In TS, provides type safety
-						* Good: Works even when targeting ES3
-						* Good: You only have to state the instance name once
-						* Bad: You have to state the parameters twice
-						* Bad: When the signature changes, so must the lambda
-						* Bad: Doesn't work with varargs ([rest parameters](https://www.typescriptlang.org/docs/handbook/functions.html#rest-parameters))
+						* <i class="pro"></i> Easy to read and understand
+						* <i class="pro"></i> In TS, provides type safety
+						* <i class="pro"></i> Works even when targeting ES3
+						* <i class="pro"></i> You only have to state the instance name once
+						* <i class="con"></i> You have to state the parameters twice
+						* <i class="con"></i> When the signature changes, so must the lambda
+						* <i class="con"></i> Doesn't work with varargs ([rest parameters](https://www.typescriptlang.org/docs/handbook/functions.html#rest-parameters))
 					</textarea>
 				</section>
 
@@ -151,17 +187,17 @@
 					</textarea>
 				</section>
 
-				<section data-markdown>
+				<section data-markdown class="pro-con-list">
 					<textarea data-template>
 						<h2>Option 2: <code class="narrow">Function.prototype.bind</code></h2>
 
 						Tradeoffs:
-						* Good: No extra work if the function has parameters  
+						* <i class="pro"></i> No extra work if the function has parameters  
 						(or if they change)
-						* Bad: In TS, (currently) provides no type safety
-						* Bad: Only available in ES5 and later (if that matters)
-						* Bad: You have to state the instance name twice
-						* Bad: Not obvious when reading it
+						* <i class="con"></i> In TS, (currently) provides no type safety
+						* <i class="con"></i> Only available in ES5 and later (if that matters)
+						* <i class="con"></i> You have to state the instance name twice
+						* <i class="con"></i> Not obvious when reading it
 					</textarea>
 				</section>
 
@@ -187,17 +223,19 @@
 					</textarea>
 				</section>
 
-				<section data-markdown>
+				<section data-markdown class="pro-con-list">
 					<textarea data-template>
 						<h2>Option 3: Use a Decorator</h2>
 
 						Tradeoffs:
-						* Good: Once you add the decorator, you can't forget to preserve the context
-						* Good: In TS, provides type safety
-						* Bad: Hides the solution behind a "magic" decorator
-						* Bad: You have to modify the class decl in order to use it
-						* Bad: Only available in ES5 and later (if that matters)
-						* Bad: TS decorators are (technically) [an experimental feature](https://www.typescriptlang.org/docs/handbook/decorators.html) (as of TypeScript 2.4)
+						* <i class="pro"></i> Once you add the decorator, you can't forget to  
+						preserve the context
+						* <i class="pro"></i> In TS, provides type safety
+						* <i class="con"></i> Hides the solution behind a "magic" decorator
+						* <i class="con"></i> You have to modify the class decl in order to use it
+						* <i class="con"></i> Only available in ES5 and later (if that matters)
+						* <i class="con"></i> (as of TS 2.4) TS decorators are (technically)  
+						[an experimental feature](https://www.typescriptlang.org/docs/handbook/decorators.html)
 					</textarea>
 				</section>
 
