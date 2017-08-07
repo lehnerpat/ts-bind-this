@@ -1,7 +1,33 @@
 # TS ! `bind` ! `this`
 
-[View the slides](https://nevik.github.io/ts-bind-this/) (or their source [on the `gh-pages` branch](https://github.com/nevik/ts-bind-this/tree/gh-pages))
+*[View the slides](https://nevik.github.io/ts-bind-this/) (or their source [on the `gh-pages` branch](https://github.com/nevik/ts-bind-this/tree/gh-pages))*
 
+Let's say you have the following TypeScript class:
+```typescript
+class OrderItem {
+    public constructor(public readonly name: string) { }
+    public onOrder() { alert(`You're ordering: ${this.name}!`); }
+}
+```
+
+And let's say you want to hook instances of `OrderItem` up to some UI, and make `onOrder()` a callback for a button.
+
+If you're used to languages like Java or C#, you may expect that you can pass an instance method as a callback like so:
+```typescript
+const pizza = new OrderItem('pizza');
+const pizzaButton = ...; // a <button> for pizza
+pizzaButton.addEventListener('click', pizza.onOrder);
+```
+
+But when you run that code, and then click the `<button>`, the dialog that you get doesn't actually contain the name of the item (`'pizza'`).
+
+Why?
+
+Because the `this` in JavaScript (and therefore in TypeScript) doesn't behave like the `this` in Java or C#.
+
+In particular, JS's `this` is not always the "owning instance" of a method, but more generally is the *context of a function call*.
+
+---
 
 ## Sources for this talk
 
