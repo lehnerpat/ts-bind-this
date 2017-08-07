@@ -1,7 +1,8 @@
 import 'normalize.css';
 import 'milligram';
-
 import './styles.css';
+
+// import { bound } from './bound'; // for solution Option 3
 
 const makeHTML = (orderItem: OrderItem): { orderItemDiv: HTMLDivElement, orderItemButton: HTMLButtonElement } => {
     const makeDiv = (...classes: string[]) => {
@@ -34,7 +35,6 @@ class OrderItem {
         alert(`You're ordering: ${this.name}!`);
     }
 }
-
 
 const listContainer = document.getElementById('list-container');
 
