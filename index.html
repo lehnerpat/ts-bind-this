@@ -10,7 +10,7 @@
 		<link rel="stylesheet" href="css/theme/white.css">
 
 		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<link rel="stylesheet" href="lib/css/idea.css">
 
 		<style type="text/css">
 			code.narrow {
@@ -79,11 +79,11 @@
 						## What's the problem?
 
 						* Instance methods don't work as callback (naively)
-						  ```
+						  ```typescript
 						  $(...).on('click', this.someMethod)
 						  ```
 						* You often see:
-						  ```
+						  ```typescript
 						  $(...).on('click', this.someMethod.bind(this)) // or:
 						  $(...).on('click', () => this.someMethod())
 						  ```
@@ -254,6 +254,7 @@
 						* [_How can I preserve lexical scope in TypeScript with a callback function_](https://stackoverflow.com/questions/14471975/how-can-i-preserve-lexical-scope-in-typescript-with-a-callback-function) on StackOverflow
 						* [_TypeScript “this” scoping issue when called in jquery callback_](https://stackoverflow.com/questions/20627138/typescript-this-scoping-issue-when-called-in-jquery-callback) on StackOverflow
 						* [_'this' in TypeScript_](https://github.com/Microsoft/TypeScript/wiki/'this'-in-TypeScript) on the TS wiki
+						* [JohnWeisz/BoundMethods](https://github.com/JohnWeisz/BoundMethods) on GitHub - an example of binding instance methods with a custom TypeScript decorator
 						* My own (painful) experience
 					</textarea>
 				</section>
@@ -277,6 +278,8 @@
 						  * With runnable example code to try it in the browser
 						* Slides are on [the `gh-pages` branch](https://github.com/nevik/ts-bind-this/tree/gh-pages)
 						  * Slides made with [reveal.js](https://github.com/hakimel/reveal.js#configuration)
+						  * If you want to export the slides to PDF, open them [with `print-pdf` in the query string](?print-pdf)
+							in Google Chrome or Chromium, then use the regular print function there
 					</textarea>
 				</section>
 			</div>
@@ -295,6 +298,8 @@
 				margin: 0.05,
 
 				transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+				pdfMaxPagesPerSlide: 1,
 
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
